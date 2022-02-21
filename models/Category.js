@@ -12,8 +12,9 @@ Category.init(
       primaryKey: true,
       autoIncrement: true,
     },
-    category_id: {
+    category_name: {
       type: DataTypes.INTEGER,
+      allowNull: false
       // referemces the category model's id
     }
     // define columns
