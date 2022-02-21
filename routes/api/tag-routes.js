@@ -16,7 +16,7 @@ router.get('/AllTags', async(req, res) => {
   // be sure to include its associated Product data
 });
 
-router.get('/oneTag:id', async(req, res) => {
+router.get('/:id', async(req, res) => {
   try {
     const oneTag = await Tag.findOne({
       where: {
