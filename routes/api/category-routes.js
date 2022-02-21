@@ -16,7 +16,7 @@ router.get('/allCats', async(req, res) => {
   // be sure to include its associated Products
 });
 
-router.get('/:id', async(req, res) => {
+router.get('/oneCat:id', async(req, res) => {
   try {
     const oneCat = await Category.findOne({
       where: {

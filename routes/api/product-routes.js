@@ -18,7 +18,7 @@ router.get('/allProd', async(req, res) => {
 });
 
 // get one product
-router.get('/:id', async(req, res) => {
+router.get('/oneProd:id', async(req, res) => {
   try {
     const oneProd = await Category.findOne({
       where: {
