@@ -3,10 +3,12 @@ const { Tag, Product, ProductTag } = require('../../models');
 
 // The `/api/tags` endpoint
 
-router.get('/findAllTags', async(req, res) => {
+router.get('/AllTags', async(req, res) => {
   try {
-    const findAllTags = await Tag.findAll();
-    res.status(200).json(findAllTags);
+    const allTags = await Tag.findAll({
+      include: [Product]
+    });
+    res.status(200).json(allTags);
   } catch(err) {
     res.status(400).json(err);
   }
@@ -15,12 +17,17 @@ router.get('/findAllTags', async(req, res) => {
 });
 
 router.get('/:id', async(req, res) => {
-    try {
-      const singleTag = await Tag.findOne(req.params.id);
-      res.status(200).json(singleTag);
-    } catch(err) {
-      res.status(400).json(err);
-    }
+  try {
+    const oneTag = await Tag.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: [Product]
+    });
+    res.status(200).json(oneTag);
+  } catch(err) {
+    res.status(400).json(err);
+  }
   // find a single tag by its `id`
   // be sure to include its associated Product data
 });
@@ -39,12 +46,16 @@ router.post('/', async(req, res) => {
 
 
 router.put('/:id', async(req, res) => {
-  const updateTags = await Tag.update(req.body, {
-    where: {
-      id: req.params.id,
-    }
-  }).catch((err) => res.json(err));
-    res.json(updateTags);
+  try {
+    const updateTag = await Category.update(req.body, {
+      where: {
+        id: req.params.id
+      }
+    });
+    res.status(200).json(updateTag);
+  } catch(err) {
+    res.status(400).json(err);
+  }
 
   // update a tag's name by its `id` value
 });
@@ -54,18 +65,11 @@ router.delete('/:id', async(req, res) => {
     const deleteTag = await Tag.destroy({
       where: {
         id: req.params.id
-      }      
-  
+      }
     });
-
-    if(!deleteTag){
-      res.status(400).json({message: 'failed to delete'});
-      return;
-    }
-
     res.status(200).json(deleteTag);
-  } catch(err){
-    res.status(500).json(err);
+  } catch(err) {
+    res.status(400).json(err);
   }
   // delete on tag by its `id` value
 });
